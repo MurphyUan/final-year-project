@@ -25,9 +25,4 @@ public class Kart : MonoBehaviour {
     [SerializeField] private Transform rearWheels;
     [SerializeField] private Transform steeringWheel;
 
-    [Header("Particle Effects")]
-    [SerializeField] private Transform wheelParticles;
-    [SerializeField] private Transform flashParticles;
-    [SerializeField] private Color[] turboColours;
-
 } 
