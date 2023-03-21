@@ -1342,7 +1342,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293131903}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.8357112, y: -1.9226078, z: -2.5696301}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1513,6 +1513,11 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 9157316466326159010, guid: 7d8e2b3c7048c1549add8aaa1541373c, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -1558,7 +1563,6 @@ MonoBehaviour:
   m_ProtocolType: 0
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 6144
-  m_MaxSendQueueSize: 98304
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60

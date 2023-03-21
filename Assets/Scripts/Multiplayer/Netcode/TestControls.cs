@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TestControls : NetworkBehaviour
 {
+    [SerializeField] private Transform spawnedObjectPrefab;
+
     private NetworkVariable<NetworkData> networkVariable = new NetworkVariable<NetworkData>(
         new NetworkData {
             _int = 1,
@@ -45,6 +47,10 @@ public class TestControls : NetworkBehaviour
                 _bool = !networkVariable.Value._bool,
                 message = "TestString"
             };
+        }
+
+        if(Input.GetKeyDown(KeyCode.F)){
+            Instantiate(spawnedObjectPrefab);
         }
 
         Vector3 moveDir = new Vector3(0,0,0);
