@@ -21,8 +21,6 @@ public class TestRelay : MonoBehaviour
         };
         // Register User Anonymously (TEMP)
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-        // await InitRelay(lobbySize);
     }
 
     private async void InitRelay(int lobbySize)
@@ -35,5 +33,15 @@ public class TestRelay : MonoBehaviour
             Debug.Log(e);
         }
         
+    }
+
+    private async void JoinRelay(string joinCode)
+    {
+        try{
+            Debug.Log($"Joining Relay with {joinCode}");
+            await RelayService.Instance.JoinAllocationAsync(joinCode);
+        }catch(RelayServiceException e){
+            Debug.Log(e);
+        }
     }
 }
