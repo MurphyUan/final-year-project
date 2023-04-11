@@ -8,6 +8,8 @@ public class TestControls : NetworkBehaviour
 {
     [SerializeField] private Transform spawnedObjectPrefab;
 
+    private Transform spawnedObjectTransform;
+
     private NetworkVariable<NetworkData> networkVariable = new NetworkVariable<NetworkData>(
         new NetworkData {
             _int = 1,
@@ -39,6 +41,7 @@ public class TestControls : NetworkBehaviour
         if(!IsOwner) return;
 
         if(Input.GetKeyDown(KeyCode.T)) {
+            
             // TestServerRpc();
             TestClientRpc();
 
@@ -50,7 +53,13 @@ public class TestControls : NetworkBehaviour
         }
 
         if(Input.GetKeyDown(KeyCode.F)){
-            Instantiate(spawnedObjectPrefab);
+            spawnedObjectTransform = Instantiate(spawnedObjectPrefab);
+            spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Y)){
+            spawnedObjectTransform.GetComponent<NetworkObject>().Despawn(true);
+            Destroy(spawnedObjectTransform);
         }
 
         Vector3 moveDir = new Vector3(0,0,0);
