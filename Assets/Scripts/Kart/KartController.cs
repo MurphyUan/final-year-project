@@ -31,7 +31,10 @@ public class KartController : MonoBehaviour
     }
 
     private void Update() {
+        //MoveKart();
+    }
 
+    public void MoveKart(Vector2 moveValue){
         float newRotation = turnInput * turnSpeed * Time.deltaTime * moveInput;
 
         if (isGrounded)

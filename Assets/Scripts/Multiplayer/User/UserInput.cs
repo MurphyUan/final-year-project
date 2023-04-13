@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(KartController))]
 public class UserInput : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    private float forwardValue;
 
     private Vector2 moveValue;
     private KartController controller;
@@ -17,7 +17,7 @@ public class UserInput : MonoBehaviour
 
     public virtual void Move(InputAction.CallbackContext context)
     {
-        moveValue = context.ReadValue<Vector2>() * Time.deltaTime * speed;
+        moveValue = context.ReadValue<Vector2>() * Time.deltaTime * forwardValue;
     }
 
     private void Update() {
