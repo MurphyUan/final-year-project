@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class KartController : MonoBehaviour
 {
     [SerializeField] Rigidbody sphereRb;
@@ -23,6 +22,7 @@ public class KartController : MonoBehaviour
         sphereRb.transform.parent = null;
         // Get current from rigidbody component
         normalDrag = sphereRb.drag;
+        // Some Change to Update Unity
     }
 
     public (float forwardValue, float turnValue) MoveKart(float forwardValue, float turnValue){
