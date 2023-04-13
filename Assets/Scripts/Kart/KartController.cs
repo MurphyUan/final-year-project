@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class KartController : MonoBehaviour
 {
-    private Rigidbody sphereRb;
+    [SerializeField] Rigidbody sphereRb;
 
     [SerializeField] private float fwdSpeed;
     [SerializeField] private float revSpeed;
@@ -14,28 +14,19 @@ public class KartController : MonoBehaviour
 
     private bool isGrounded;
 
-    private float moveInput;
-    private float turnInput;
-
     private float normalDrag;
     [SerializeField] private float amplifiedDrag;
     [SerializeField] private float alignToGroundTime;
 
     private void Start() {
-        // Get Rigidbody 
-        sphereRb = GetComponent<Rigidbody>();
         // Split Motor from rest of Mody
         sphereRb.transform.parent = null;
         // Get current from rigidbody component
         normalDrag = sphereRb.drag;
     }
 
-    private void Update() {
-        //MoveKart();
-    }
-
-    public void MoveKart(Vector2 moveValue){
-        float newRotation = turnInput * turnSpeed * Time.deltaTime * moveInput;
+    public (float forwardValue, float turnValue) MoveKart(float forwardValue, float turnValue){
+        float newRotation = turnValue * turnSpeed * Time.deltaTime * forwardValue;
 
         if (isGrounded)
             transform.Rotate(0, newRotation, 0, Space.World);
@@ -51,12 +42,14 @@ public class KartController : MonoBehaviour
         Quaternion toRotateTo = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, toRotateTo, alignToGroundTime * Time.deltaTime);
 
-        moveInput *= moveInput > 0 ? fwdSpeed : revSpeed;
+        forwardValue *= forwardValue > 0 ? fwdSpeed : revSpeed;
 
         sphereRb.drag = isGrounded ? normalDrag : amplifiedDrag;
+
+        return (forwardValue, turnValue);
     }
 
-    private void FixedUpdate() {
+    public void FixedMoveKart(float forwardValue){
         if(isGrounded)
             sphereRb.AddForce(transform.forward * moveInput, ForceMode.Acceleration);
         else

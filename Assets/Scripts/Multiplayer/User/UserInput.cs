@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class UserInput : MonoBehaviour
 {
     private float forwardValue;
+    private float turnValue;
 
-    private Vector2 moveValue;
     private KartController controller;
 
     private void Start() {
@@ -17,10 +17,26 @@ public class UserInput : MonoBehaviour
 
     public virtual void Move(InputAction.CallbackContext context)
     {
-        moveValue = context.ReadValue<Vector2>() * Time.deltaTime * forwardValue;
+        // turnValue = context.ReadValue<Vector2>() * Time.deltaTime * forwardValue;
     }
 
-    private void Update() {
-        
+    public virtual void Turn(InputAction.CallbackContext context)
+    {
+        turnValue = context.ReadValue<float>();
+    }
+
+    public virtual void Drive(InputAction.CallbackContext context)
+    {
+        forwardValue = context.ReadValue<float>();
+    }
+
+    private void Update() 
+    {
+        (forwardValue, turnValue) = controller.MoveKart(forwardValue, turnValue);
+    }
+
+    private void FixedUpdate() 
+    {
+        controller.FixedMoveKart(forwardValue);
     }
 }
