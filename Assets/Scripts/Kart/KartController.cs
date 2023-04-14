@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class KartController : MonoBehaviour
 {
     [SerializeField] Rigidbody sphereRb;
+
+    [SerializeField] private float MaxSpeed;
 
     [SerializeField] private float fwdSpeed;
     [SerializeField] private float revSpeed;
@@ -13,7 +16,7 @@ public class KartController : MonoBehaviour
 
     private bool isGrounded;
 
-    private float normalDrag;
+    private float normalDrag = 1;
     [SerializeField] private float amplifiedDrag;
     [SerializeField] private float alignToGroundTime;
 
@@ -27,6 +30,8 @@ public class KartController : MonoBehaviour
 
     public (float forwardValue, float turnValue) MoveKart(float forwardValue, float turnValue){
         float newRotation = turnValue * turnSpeed * Time.deltaTime * forwardValue;
+
+
 
         if (isGrounded)
             transform.Rotate(0, newRotation, 0, Space.World);
@@ -46,12 +51,16 @@ public class KartController : MonoBehaviour
 
         sphereRb.drag = isGrounded ? normalDrag : amplifiedDrag;
 
+        Debug.Log($"{forwardValue} {turnValue}");
+
         return (forwardValue, turnValue);
     }
 
     public void FixedMoveKart(float forwardValue){
-        if(isGrounded)
-            sphereRb.AddForce(transform.forward * moveInput, ForceMode.Acceleration);
+        if(isGrounded){
+            sphereRb.AddForce(transform.forward * forwardValue);
+            // sphereRb.velocity = sphereRb.velocity.normalized * MaxSpeed;
+        }
         else
             sphereRb.AddForce(transform.up * -40f);
     }

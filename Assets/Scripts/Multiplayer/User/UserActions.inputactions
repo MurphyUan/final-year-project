@@ -27,16 +27,16 @@
                     "name": "Turn",
                     "type": "PassThrough",
                     "id": "dbdf6c2a-4709-4d53-9770-30195cbbde2d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Drive",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "e9d29786-e6fd-410d-84b1-046089d86499",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -280,7 +280,7 @@
                     "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Turn",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -291,7 +291,7 @@
                     "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Turn",
                     "isComposite": false,
                     "isPartOfComposite": true

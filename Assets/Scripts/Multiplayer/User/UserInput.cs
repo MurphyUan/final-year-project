@@ -15,17 +15,12 @@ public class UserInput : MonoBehaviour
         controller = GetComponent<KartController>();
     }
 
-    public virtual void Move(InputAction.CallbackContext context)
-    {
-        // turnValue = context.ReadValue<Vector2>() * Time.deltaTime * forwardValue;
-    }
-
-    public virtual void Turn(InputAction.CallbackContext context)
+    public void Turn(InputAction.CallbackContext context)
     {
         turnValue = context.ReadValue<float>();
     }
 
-    public virtual void Drive(InputAction.CallbackContext context)
+    public void Drive(InputAction.CallbackContext context)
     {
         forwardValue = context.ReadValue<float>();
     }

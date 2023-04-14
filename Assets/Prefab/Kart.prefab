@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6323639107284464178}
   - component: {fileID: 9062629022989788770}
   - component: {fileID: 6437009340284978201}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Motor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2554528120461338243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2924933974562638753}
   - component: {fileID: 7216694183312695457}
+  - component: {fileID: 7216694183461579028}
   m_Layer: 0
   m_Name: Kart
   m_TagString: Untagged
@@ -161,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 4d0b5a28f6cbb3d4492ddda4d6c93b36, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -233,7 +234,28 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1832612248610106563}
+--- !u!114 &7216694183461579028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266536325749419046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b983c4efd9a45a84e999d164fe0663e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphereRb: {fileID: 6437009340284978201}
+  fwdSpeed: 200
+  revSpeed: 100
+  turnSpeed: 150
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  amplifiedDrag: 1
+  alignToGroundTime: 20
 --- !u!1 &4729744749471354691
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8684979217086094485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CameraAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +299,7 @@ GameObject:
   - component: {fileID: 5192390889135725448}
   - component: {fileID: 288256732226191128}
   - component: {fileID: 3488974706710215964}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +383,7 @@ GameObject:
   - component: {fileID: 2144536943008282324}
   - component: {fileID: 1832612248610106563}
   - component: {fileID: 7187965036653679076}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
