@@ -25,13 +25,13 @@ public class UserInput : MonoBehaviour
         forwardValue = context.ReadValue<float>();
     }
 
-    private void Update() 
-    {
-        (forwardValue, turnValue) = controller.MoveKart(forwardValue, turnValue);
-    }
+    // private void Update() 
+    // {
+    //     (forwardValue, turnValue) = controller.MoveKart(forwardValue, turnValue);
+    // }
 
-    private void FixedUpdate() 
-    {
-        controller.FixedMoveKart(forwardValue);
-    }
+    // private void FixedUpdate() 
+    // {
+    //     controller.FixedMoveKart(forwardValue);
+    // }
 }
