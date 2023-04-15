@@ -86,6 +86,10 @@ public class TestKartController : MonoBehaviour
         AccelInput = acceleration = Mathf.Clamp(acceleration, 0, 1);
         BrakeInput = footBrake = -1 * Mathf.Clamp(footBrake, -1, 0);
 
+        SteerHelper();
+        ApplyDrive(acceleration, footBrake);
+        CapSpeed();
+
         _steerAngle = steering * _currentMaxSteerAngle;
         wheelColliders[0].steerAngle = wheelColliders[1].steerAngle = _steerAngle;
     }
@@ -160,5 +164,80 @@ public class TestKartController : MonoBehaviour
         }
 
         _oldRotation = transform.eulerAngles.y;
+    }
+
+    private void AntiRoll()
+    {
+        float travelLeft = 1.0f;
+        float travelRight = 1.0f;
+
+        // Front AntiRoll Detection & Correction
+
+        bool groundedLeftFront = wheelColliders[0].GetGroundHit(out WheelHit wheelHit);
+        if(groundedLeftFront) travelLeft = (-wheelColliders[0].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[0].radius) / wheelColliders[0].suspensionDistance;
+
+        bool groundedRightFront = wheelColliders[1].GetGroundHit(out wheelHit);
+        if(groundedRightFront) travelRight = (-wheelColliders[1].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[1].radius) / wheelColliders[1].suspensionDistance;
+
+        float antiRollForce = (travelLeft - travelRight) * _antiRollVal;
+
+        if(groundedLeftFront) _rigidbody.AddForceAtPosition(wheelColliders[0].transform.up * -antiRollForce, wheelColliders[0].transform.position);
+        if(groundedRightFront) _rigidbody.AddForceAtPosition(wheelColliders[1].transform.up * -antiRollForce, wheelColliders[1].transform.position);
+
+        // Rear AntiRoll Detection & Correction
+
+        bool groundedLeftRear = wheelColliders[2].GetGroundHit(out wheelHit);
+        if(groundedLeftRear) travelLeft = (wheelColliders[2].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[2].radius) / wheelColliders[0].suspensionDistance;
+
+        bool groundedRightRear = wheelColliders[1].GetGroundHit(out wheelHit);
+        if(groundedRightFront) travelRight = (wheelColliders[3].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[3].radius) / wheelColliders[1].suspensionDistance;
+
+        antiRollForce = (travelLeft - travelRight) * _antiRollVal;
+
+        if(groundedLeftRear) _rigidbody.AddForceAtPosition(wheelColliders[2].transform.up * -antiRollForce, wheelColliders[2].transform.position);
+        if(groundedRightRear) _rigidbody.AddForceAtPosition(wheelColliders[3].transform.up * -antiRollForce, wheelColliders[3].transform.position);
+    }
+
+    private void  AddDownForce()
+    {
+        if (_downForce > 0) _rigidbody.AddForce(_downForce * _rigidbody.velocity.magnitude * -transform.up);
+    }
+
+    private void CheckForWheelSpin()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            wheelColliders[i].GetGroundHit(out WheelHit wheelHit);
+
+            if (Mathf.Abs(wheelHit.forwardSlip) >= _slipLimit || Mathf.Abs(wheelHit.sidewaysSlip) >= _slipLimit)
+            {
+                // Perform Effects & Play Sound
+            }
+        }
+    }
+
+    private void TractionControl()
+    {
+        wheelColliders[2].GetGroundHit(out WheelHit wheelHit);
+        AdjustTorque(wheelHit.forwardSlip);
+
+        wheelColliders[3].GetGroundHit(out wheelHit);
+        AdjustTorque(wheelHit.forwardSlip);
+    }
+
+    private void AdjustTorque(float forwardSlip)
+    {
+        if (forwardSlip >= _slipLimit && _currentTorque >= 0)
+        {
+            _currentTorque -= 10 * _tractionControl;
+        }
+        else
+        {
+            _currentTorque += 10 * _tractionControl;
+            if (_currentTorque > _fullTorqueOverAllWheels)
+            {
+                _currentTorque = _fullTorqueOverAllWheels;
+            }
+        }
     }
 }
