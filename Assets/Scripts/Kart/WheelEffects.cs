@@ -60,4 +60,12 @@ public class WheelEffects : MonoBehaviour
         _skidTrail.parent = transform;
         _skidTrail.localPosition = -Vector3.up * (_wheelCollider.radius + _skidTrailOffset);
     }
+
+    public void EndSkidTrail()
+    {
+        if(!IsSkidding) return;
+        IsSkidding = false;
+        _skidTrail.parent = skidTrailsDetachedParent;
+        Destroy(_skidTrail.gameObject, 10f);
+    }
 }
