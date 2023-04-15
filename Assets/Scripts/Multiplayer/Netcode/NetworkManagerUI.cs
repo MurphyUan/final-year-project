@@ -10,13 +10,16 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;
 
+    [SerializeField] TestRelay relay;
+
     private void Awake() 
     {
         serverBtn.onClick.AddListener(() => {
             NetworkManager.Singleton.StartServer();
         });
         hostBtn.onClick.AddListener(() => {
-            NetworkManager.Singleton.StartHost();
+            // NetworkManager.Singleton.StartHost();
+            relay.InitRelay();
         });
         clientBtn.onClick.AddListener(() => {
             NetworkManager.Singleton.StartClient();

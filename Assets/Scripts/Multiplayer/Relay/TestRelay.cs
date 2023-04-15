@@ -12,7 +12,7 @@ using UnityEngine;
 public class TestRelay : MonoBehaviour
 {
 
-    [SerializeField] private int lobbySize = 3;
+    [SerializeField] private int _lobbySize = 4;
 
     private async void Start()
     {
@@ -26,10 +26,10 @@ public class TestRelay : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    private async void InitRelay(int lobbySize)
+    public async void InitRelay()
     {
         try{
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(lobbySize - 1);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(_lobbySize - 1);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             Debug.Log(joinCode);
 
@@ -41,10 +41,9 @@ public class TestRelay : MonoBehaviour
         } catch (RelayServiceException e) {
             Debug.Log(e);
         }
-        
     }
 
-    private async void JoinRelay(string joinCode)
+    public async void JoinRelay(string joinCode)
     {
         try{
             Debug.Log($"Joining Relay with {joinCode}");
