@@ -48,4 +48,16 @@ public class WheelEffects : MonoBehaviour
         _audioSource.Stop();
         IsPlayingAudio = false;
     }
+
+    public IEnumerator StartSkidTrail()
+    {
+        IsSkidding = true;
+        _skidTrail = Instantiate(skidTrailPrefab);
+        while(_skidTrail == null)
+        {
+            yield return null;
+        }
+        _skidTrail.parent = transform;
+        _skidTrail.localPosition = -Vector3.up * (_wheelCollider.radius + _skidTrailOffset);
+    }
 }
