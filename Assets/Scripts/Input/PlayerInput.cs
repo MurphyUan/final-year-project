@@ -1,23 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(KartController))]
-public class UserInput : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
-    private float forwardValue;
-    private float turnValue;
+    private PlayerControls _playerControls;
+    private TestKartController _testKartController;
+    private ResetKart _resetKart;
 
-    private KartController _controller;
+    private float _acceleration;
+    private float _turn;
 
-    // private void Update() 
-    // {
-    //     (forwardValue, turnValue) = controller.MoveKart(forwardValue, turnValue);
-    // }
+    public float Acceleration {get; private set;}
+    public float Turn {get; private set;}
 
-    // private void FixedUpdate() 
-    // {
-    //     controller.FixedMoveKart(forwardValue);
-    // }
+    private bool isPaused = false;
+
+    public bool IsPaused { get; private set;}
+
+    public static Action<bool> OnPause;
+
+    private void Awake() 
+    {
+        
+    }
 }
