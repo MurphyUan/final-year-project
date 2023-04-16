@@ -35,12 +35,13 @@ public class PlayerInput : MonoBehaviour
 
     private void Update() 
     {
-        
+        Acceleration = _playerControls.Player.Drive.ReadValue<float>();
+        Turn = _playerControls.Player.Turn.ReadValue<float>();
     }
 
     private void FixedUpdate() 
     {
-        
+        _testKartController.Move(Turn, Acceleration, Acceleration);
     }
 
     private void OnEnable() 
