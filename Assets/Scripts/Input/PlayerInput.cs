@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : NetworkBehaviour
+public class PlayerInput : MonoBehaviour
 {
     private PlayerControls _playerControls;
     private TestKartController _testKartController;
@@ -20,6 +20,8 @@ public class PlayerInput : NetworkBehaviour
     {
         _playerControls = new PlayerControls();
         OnEnable();
+
+        _testKartController = GetComponent<TestKartController>();
     }
 
     private void Respawn(InputAction.CallbackContext context)
@@ -35,16 +37,12 @@ public class PlayerInput : NetworkBehaviour
 
     private void Update() 
     {
-        if (!IsOwner) return;
-
         Acceleration = _playerControls.Player.Drive.ReadValue<float>();
         Turn = _playerControls.Player.Turn.ReadValue<float>();
     }
 
     private void FixedUpdate() 
     {
-        if (!IsOwner) return;
-
         _testKartController.Move(Turn, Acceleration, Acceleration);
     }
 

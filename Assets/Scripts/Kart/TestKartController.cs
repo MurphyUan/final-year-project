@@ -86,12 +86,19 @@ public class TestKartController : MonoBehaviour
         AccelInput = acceleration = Mathf.Clamp(acceleration, 0, 1);
         BrakeInput = footBrake = -1 * Mathf.Clamp(footBrake, -1, 0);
 
+        _steerAngle = steering * _currentMaxSteerAngle;
+        wheelColliders[0].steerAngle = wheelColliders[1].steerAngle = _steerAngle;
+
         SteerHelper();
         ApplyDrive(acceleration, footBrake);
         CapSpeed();
+        AddDownForce();
+        CheckForWheelSpin();
+        TractionControl();
+        AntiRoll();
+        UpdateSteerAngle();
 
-        _steerAngle = steering * _currentMaxSteerAngle;
-        wheelColliders[0].steerAngle = wheelColliders[1].steerAngle = _steerAngle;
+        Debug.Log($"{CurrentSpeed}");
     }
 
     private void CapSpeed()
@@ -129,23 +136,6 @@ public class TestKartController : MonoBehaviour
                 wheelColliders[i].motorTorque = -_reverseTorque * footBrake;
             }
         }
-
-        //Lights - Brake Lights
-        // if (footBrake > 0)
-        // {
-        //     if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, _rigidbody.velocity) < 50f)
-        //     {
-        //         TurnBrakeLightsOn();
-        //     }
-        //     else
-        //     {
-        //         TurnBrakeLightsOff();
-        //     }
-        // }
-        // else
-        // {
-        //     TurnBrakeLightsOff();
-        // }
     }
 
     private void SteerHelper()
@@ -187,10 +177,10 @@ public class TestKartController : MonoBehaviour
         // Rear AntiRoll Detection & Correction
 
         bool groundedLeftRear = wheelColliders[2].GetGroundHit(out wheelHit);
-        if(groundedLeftRear) travelLeft = (wheelColliders[2].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[2].radius) / wheelColliders[0].suspensionDistance;
+        if(groundedLeftRear) travelLeft = (-wheelColliders[2].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[2].radius) / wheelColliders[0].suspensionDistance;
 
         bool groundedRightRear = wheelColliders[1].GetGroundHit(out wheelHit);
-        if(groundedRightFront) travelRight = (wheelColliders[3].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[3].radius) / wheelColliders[1].suspensionDistance;
+        if(groundedRightFront) travelRight = (-wheelColliders[3].transform.InverseTransformPoint(wheelHit.point).y - wheelColliders[3].radius) / wheelColliders[1].suspensionDistance;
 
         antiRollForce = (travelLeft - travelRight) * _antiRollVal;
 
@@ -239,5 +229,15 @@ public class TestKartController : MonoBehaviour
                 _currentTorque = _fullTorqueOverAllWheels;
             }
         }
+    }
+
+    private void UpdateSteerAngle()
+    {
+        if (CurrentSpeed < 25f)
+            _currentMaxSteerAngle = Mathf.MoveTowards(_currentMaxSteerAngle, _maximumSteerAngle, 0.5f);
+        else if (CurrentSpeed >= 25f && CurrentSpeed < 60f)
+            _currentMaxSteerAngle = Mathf.MoveTowards(_currentMaxSteerAngle, _maximumSteerAngle / 1.5f, 0.5f);
+        else if (CurrentSpeed >= 60f)
+            _currentMaxSteerAngle = Mathf.MoveTowards(_currentMaxSteerAngle, _maximumSteerAngle / 2f, 0.5f);
     }
 }
