@@ -9,21 +9,7 @@ public class UserInput : MonoBehaviour
     private float forwardValue;
     private float turnValue;
 
-    private KartController controller;
-
-    private void Start() {
-        controller = GetComponent<KartController>();
-    }
-
-    public void Turn(InputAction.CallbackContext context)
-    {
-        turnValue = context.ReadValue<float>();
-    }
-
-    public void Drive(InputAction.CallbackContext context)
-    {
-        forwardValue = context.ReadValue<float>();
-    }
+    private KartController _controller;
 
     // private void Update() 
     // {
