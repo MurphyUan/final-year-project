@@ -62,6 +62,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b61cbc0-df41-4fd1-89ea-b0ed8a52eb19"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed6070a9-b9a5-4528-ad39-602c5f32ee31"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -405,6 +423,50 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Drive"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00929dff-fcc3-430f-999d-c03fac6b85b1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbf3c3eb-d58a-4587-b592-7686cfae1a73"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75b6eb59-fa20-48ed-8d73-8935ae0aef86"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b78cac43-3edd-4807-b6af-4ad941a4f927"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -994,6 +1056,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
         m_Player_Drive = m_Player.FindAction("Drive", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_Respawn = m_Player.FindAction("Respawn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1069,6 +1133,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Turn;
     private readonly InputAction m_Player_Drive;
+    private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_Respawn;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1077,6 +1143,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Turn => m_Wrapper.m_Player_Turn;
         public InputAction @Drive => m_Wrapper.m_Player_Drive;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @Respawn => m_Wrapper.m_Player_Respawn;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1098,6 +1166,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Drive.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrive;
                 @Drive.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrive;
                 @Drive.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrive;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Respawn.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRespawn;
+                @Respawn.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRespawn;
+                @Respawn.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRespawn;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1114,6 +1188,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Drive.started += instance.OnDrive;
                 @Drive.performed += instance.OnDrive;
                 @Drive.canceled += instance.OnDrive;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Respawn.started += instance.OnRespawn;
+                @Respawn.performed += instance.OnRespawn;
+                @Respawn.canceled += instance.OnRespawn;
             }
         }
     }
@@ -1274,6 +1354,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
         void OnDrive(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

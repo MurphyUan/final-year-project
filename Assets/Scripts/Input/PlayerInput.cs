@@ -9,20 +9,56 @@ public class PlayerInput : MonoBehaviour
     private TestKartController _testKartController;
     private ResetKart _resetKart;
 
-    private float _acceleration;
-    private float _turn;
-
-    public float Acceleration {get; private set;}
-    public float Turn {get; private set;}
+    private float Acceleration;
+    private float Turn;
 
     private bool isPaused = false;
-
-    public bool IsPaused { get; private set;}
 
     public static Action<bool> OnPause;
 
     private void Awake() 
     {
+        _playerControls = new PlayerControls();
+        OnEnable();
+    }
+
+    private void Respawn(InputAction.CallbackContext context)
+    {
+        // _resetKart.Respawn();
+    }
+
+    private void Paused(InputAction.CallbackContext context)
+    {
+        isPaused = !isPaused;
+        OnPause?.Invoke(isPaused);
+    }
+
+    private void Update() 
+    {
         
+    }
+
+    private void FixedUpdate() 
+    {
+        
+    }
+
+    private void OnEnable() 
+    {
+        try{
+            _playerControls.Player.Enable();
+            _playerControls.Player.Respawn.performed += Respawn;
+        }catch(Exception e){
+            Debug.Log(e);
+        }
+    }
+
+    private void OnDisable() 
+    {
+        try{
+            _playerControls.Player.Disable();
+        }catch(Exception e){
+            Debug.Log(e);
+        }
     }
 }
