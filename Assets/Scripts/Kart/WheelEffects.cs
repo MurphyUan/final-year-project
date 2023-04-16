@@ -19,7 +19,7 @@ public class WheelEffects : MonoBehaviour
 
     private void Start()
     {
-        if (skidParticles == null) Debug.Log("No smoke particle systetm found on ", gameObject);
+        if (skidParticles == null) Debug.Log("No smoke particle system found on ", gameObject);
         else skidParticles.Stop();
 
         _wheelCollider = GetComponent<WheelCollider>();

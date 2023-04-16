@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
+using Unity.Netcode;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(KartController))]
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : NetworkBehaviour
 {
     private PlayerControls _playerControls;
     private TestKartController _testKartController;
@@ -35,12 +35,16 @@ public class PlayerInput : MonoBehaviour
 
     private void Update() 
     {
+        if (!IsOwner) return;
+
         Acceleration = _playerControls.Player.Drive.ReadValue<float>();
         Turn = _playerControls.Player.Turn.ReadValue<float>();
     }
 
     private void FixedUpdate() 
     {
+        if (!IsOwner) return;
+
         _testKartController.Move(Turn, Acceleration, Acceleration);
     }
 
@@ -49,6 +53,7 @@ public class PlayerInput : MonoBehaviour
         try{
             _playerControls.Player.Enable();
             _playerControls.Player.Respawn.performed += Respawn;
+            _playerControls.Player.Pause.performed += Paused;
         }catch(Exception e){
             Debug.Log(e);
         }
@@ -57,6 +62,8 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable() 
     {
         try{
+            _playerControls.Player.Respawn.performed -= Respawn;
+            _playerControls.Player.Pause.performed -= Paused;
             _playerControls.Player.Disable();
         }catch(Exception e){
             Debug.Log(e);
