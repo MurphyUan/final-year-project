@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     private PlayerControls _playerControls;
-    private TestKartController _testKartController;
+    private SimpleKart _simpleKart;
     private ResetKart _resetKart;
 
     private float Acceleration;
@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
         _playerControls = new PlayerControls();
         OnEnable();
 
-        _testKartController = GetComponent<TestKartController>();
+        _simpleKart = GetComponent<SimpleKart>();
     }
 
     private void Respawn(InputAction.CallbackContext context)
@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        _testKartController.Move(Turn, Acceleration, Acceleration);
+        _simpleKart.Move(Acceleration, Turn);
     }
 
     private void OnEnable() 
