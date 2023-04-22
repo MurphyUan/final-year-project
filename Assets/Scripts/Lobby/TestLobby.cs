@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Authentication;
@@ -29,7 +30,11 @@ public class TestLobby : MonoBehaviour
     }
 
     public async void AnonymousSignOn(){
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        try{
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        } catch (Exception e){
+            Debug.Log(e);
+        }
     }
 
     private void Update() {
