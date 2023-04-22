@@ -28,6 +28,10 @@ public class TestLobby : MonoBehaviour
         Debug.Log(playerName);
     }
 
+    public async void AnonymousSignOn(){
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
     private void Update() {
         HandleLobbyHeartbeat();
     }

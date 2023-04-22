@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class SimpleKart : MonoBehaviour
     [SerializeField] private int numberOfWheels = 4;
 
     [SerializeField] private float _torque;
-    [SerializeField, Range(0,1)] private float _downForce = 1;
 
     [SerializeField, Range(20f, 50f)] private float _maximumSteerAngle = 25f;
     private float _steerAngle;
@@ -42,23 +42,42 @@ public class SimpleKart : MonoBehaviour
             _wheelMeshes[i].transform.SetPositionAndRotation(position, quaternion);
         }
 
-        _steerAngle = turnModifier * _maximumSteerAngle;
-        _wheelColliders[0].steerAngle = _wheelColliders[1].steerAngle = _steerAngle;
+        if(!checkContactGround()) return;
+
+        // _steerAngle = turnModifier * _maximumSteerAngle;
+        // _wheelColliders[0].steerAngle = _wheelColliders[1].steerAngle = _steerAngle;
+
+        Turn(turnModifier * _maximumSteerAngle);
+        Drive(acceleration);
+        if(acceleration <= 0)Brake(acceleration);
 
         float speed = _rigidbody.velocity.magnitude;
         if(speed > _topSpeed)
             _rigidbody.velocity = _topSpeed * _rigidbody.velocity.normalized;
-
-        Drive(acceleration);
-        if(acceleration <= 0)Brake(acceleration);
-
-        TractionControl();
     }
 
-    private void Drive(float acceleration)
+    private void Drive(float directionModifier)
     {
-        float motorTorque = acceleration * _currentTorque;
-        _wheelColliders[2].motorTorque = _wheelColliders[3].motorTorque = motorTorque;
+        float forwardSpeed = directionModifier * _currentTorque;
+
+        forwardSpeed *= directionModifier < 1 ? 2 : 1;
+
+        _rigidbody.velocity += transform.forward * forwardSpeed * Time.deltaTime;
+
+        Debug.Log($"{forwardSpeed} {CurrentSpeed}");
+    }
+
+    private void Turn(float turnAngle){
+        _wheelColliders[0].steerAngle = _wheelColliders[1].steerAngle = turnAngle;
+
+        Quaternion turnQuat = Quaternion.Euler(Vector3.Scale(Vector3.up,_rigidbody.velocity.normalized) * turnAngle * 2 * Time.deltaTime);
+
+        _rigidbody.MoveRotation(_rigidbody.rotation * turnQuat);
+
+        // float mag = _rigidbody.velocity.magnitude;
+        // _rigidbody.velocity = transform.forward * mag;
+
+        // _rigidbody.AddForce((transform.forward * _wheelColliders[0].transform.rotation),ForceMode.Acceleration);
     }
 
     private void Brake(float acceleration)
@@ -72,28 +91,15 @@ public class SimpleKart : MonoBehaviour
             _wheelColliders[3].brakeTorque = 0;
     }
 
-    private void TractionControl()
+    private bool checkContactGround()
     {
-        _wheelColliders[2].GetGroundHit(out WheelHit wheelHit);
-        AdjustTorque(wheelHit.forwardSlip);
-
-        _wheelColliders[3].GetGroundHit(out wheelHit);
-        AdjustTorque(wheelHit.forwardSlip);
-    }
-
-    private void AdjustTorque(float forwardSlip)
-    {
-        if (forwardSlip >= 1 && _currentTorque >= 0)
+        foreach(WheelCollider collider in _wheelColliders)
         {
-            _currentTorque -= 10;
-        }
-        else
-        {
-            _currentTorque += 10;
-            if (_currentTorque > _torque)
+            if(collider.GetGroundHit(out WheelHit wheelHit))
             {
-                _currentTorque = _torque;
+                return true;
             }
         }
+        return false;
     }
 }
