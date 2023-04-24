@@ -60,7 +60,7 @@ public class SimpleKart : MonoBehaviour
     {
         float forwardSpeed = directionModifier * _currentTorque;
 
-        forwardSpeed *= directionModifier < 1 ? 2 : 1;
+        // forwardSpeed *= directionModifier < 1 ? 2 : 1;
 
         _rigidbody.velocity += transform.forward * forwardSpeed * Time.deltaTime;
 

@@ -9,7 +9,7 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using UnityEngine;
 
-public class TestRelay : MonoBehaviour
+public class RelayController : MonoBehaviour
 {
 
     [SerializeField] private int _lobbySize = 4;

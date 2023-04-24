@@ -7,7 +7,6 @@ public class PlayerInput : MonoBehaviour
 {
     private PlayerControls _playerControls;
     private SimpleKart _simpleKart;
-    private ResetKart _resetKart;
 
     private float Acceleration;
     private float Turn;

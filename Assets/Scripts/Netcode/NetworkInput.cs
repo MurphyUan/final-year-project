@@ -6,19 +6,17 @@ using UnityEngine.InputSystem;
 public class NetworkInput : NetworkBehaviour
 {
     private PlayerControls _playerControls;
-    private TestKartController _testKartController;
+    private SimpleKart _kartController;
 
     private float acceleration;
     private float turn;
-
-    private bool hasMenu = false;
 
     public static Action<bool> OnPause;
 
     private void Awake() 
     {
         _playerControls = new PlayerControls();
-        _testKartController = GetComponent<TestKartController>();
+        _kartController = GetComponent<SimpleKart>();
     }
 
     private void Update() 
@@ -36,7 +34,7 @@ public class NetworkInput : NetworkBehaviour
     {
         if(!IsOwner) return;
         try{
-            _testKartController.Move(turn, acceleration, acceleration);
+            _kartController.Move(acceleration, turn);
         } catch (Exception e){
             Debug.Log(e);
         } 

@@ -10,7 +10,7 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;
 
-    [SerializeField] TestRelay relay;
+    [SerializeField] RelayController relay;
 
     private void Awake() 
     {
