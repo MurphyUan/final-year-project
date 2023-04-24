@@ -1,0 +1,40 @@
+\chapter{System Design}
+
+As mentioned previously the applied project portion of this dissertation was to build a simple multiplayer game. For this I had decided to build a simple racing game that allowed players to connect through a lobby system and would host cloud-based servers that connected clients to servers.
+For development purposes I chose to use Unity as my development platform, as well as Unity Lobby and Relay services for connecting client to servers.
+
+\section{Unity}
+
+Unity is a robust game engine that has grown in popularity among developers in recent years. Unity, which was first launched in 2005, has grown to become one of the world's most popular game engines, with a market share of more than 60\% among the top 1,000 mobile games \cite{stepico-unity}. Unity's flexibility to produce games for numerous platforms, including PC, Mac, mobile devices, and consoles, is one of the primary reasons for its popularity.
+Unity, in addition to its cross-platform capabilities, provides a number of features that make it an excellent choice for producing games of all types, including multiplayer games. Unity's networking capabilities give creators a variety of options for generating online multiplayer games, while its user-friendly drag-and-drop interface and powerful scripting tools make it simple to create games of many types, from small mobile games to big 3D open-world titles.
+Furthermore, Unity has a huge and active developer community that is constantly generating and sharing game development resources. This includes tutorials, code samples, and other valuable resources that can assist developers of all skill levels in learning new abilities and improving their productivity.
+
+\subsection{Lobby}
+
+Unity Lobby is a powerful multiplayer framework that provides developers with a set of tools and APIs for creating online multiplayer games. It is developed on top of Unity's networking technology, which supports both peer-to-peer and client-server topologies, allowing developers to construct large-scale multiplayer games.
+The Unity Lobby lobby system allows players to build or join gaming lobbies and manage members within them. Lobbies can be configured with many parameters such as game mode, player count, and matchmaking criteria, allowing players to select the ideal game to play. The matchmaking mechanism matches players with others who have comparable skill levels or preferences, providing fair and entertaining gameplay for everybody.
+Developers can use the player management system to track player behaviour and data such as game progress, achievements, and stats. This data can be used to personalise player experiences such as custom matchmaking and leaderboards.
+
+I will be using Unity's Lobby Functionality to connect players together into lobbies and allow them to connect together and play games
+
+\subsection{Relay}
+
+Unity Relay is a networking solution developed by Unity Technologies that enables developers to construct quick and stable network connections between multiplayer gaming players. Unity Relay is a cloud-based service that ensures players can connect to one another fast and effortlessly, even if they are on separate networks or behind firewalls.
+One of the primary advantages of Unity Relay is that it reduces latency in multiplayer games. The delay between a player's actions and the time those actions are reflected in the game is referred to as latency. High latency can make a game feel sluggish or unresponsive, which is annoying for players. Unity Relay reduces latency by establishing a quick and stable connection between players, ensuring that actions are reflected in the game in real-time.
+Another advantage of Unity Relay is that it secures the connection between participants. This is especially critical for games involving sensitive information or requiring a high level of security, such as online banking or gambling. Unity Relay contributes to the security and encryption of all connections between players, thereby preventing unauthorised access or hacking attempts.
+
+I have used Unity Relay to connect players together after forming a lobby, this allows for a persistent connection to be handled by the host
+
+\subsection{Core Components}
+
+My application is structured as follows
+\begin{itemize}
+    \item Input Controls
+    \item Kart Controls
+    \item Lobby Handler
+    \item Player Handler
+    \item Relay Handler
+\end{itemize}
+
+
+
